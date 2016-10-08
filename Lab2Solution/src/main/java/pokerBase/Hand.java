@@ -160,7 +160,27 @@ public class Hand {
 
 		return isRoyalFlush;
 	}
-
+	
+	
+	public static boolean isHandFiveOfAKind(Hand h, HandScore hs){
+		boolean isFiveOfAKind = false;
+		if ((isHandFourOfAKind(h,hs)) && ((hs.getKickers().get(0).geteSuit() == eSuit.JOKER) ||
+				hs.getKickers().get(0).isbWild()== true)){
+			isFiveOfAKind = true;
+		
+		return isFiveOfAKind;
+			
+			
+			
+		}
+	
+	}			
+					
+			
+		
+				
+			
+	
 	/**
 	 * isHandFourOfAKind - this method will determine if the hand is a four of a
 	 * kind
@@ -196,7 +216,7 @@ public class Hand {
 
 		return bHandCheck;
 	}
-
+	
 	/**
 	 * isHandFullHouse - This method will determine if the hand is a full house
 	 * 
