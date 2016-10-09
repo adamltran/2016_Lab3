@@ -2,6 +2,8 @@ package pokerBase;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -29,7 +31,14 @@ public class Deck_Test {
 	@Test
 	public void DeckBuildTest()
 	{
-		fail("Implement Me");
+		int jokers = 2;
+		int wc = 2;
+		ArrayList<Card> wildCards = new ArrayList<Card>(wc);
+		ArrayList<Card> dActual = new ArrayList<Card>(2);
+		Deck dw = new Deck(jokers, wildCards);
+		assertEquals(dw, dActual);
+		
+		
 	}
 	
 

@@ -5,17 +5,19 @@ import java.util.Collections;
 
 import pokerEnums.eRank;
 import pokerEnums.eSuit;
+import pokerExceptions.DeckException;
 
 public class Deck {
 
 	private ArrayList<Card> deckCards = new ArrayList<Card>();
+	private int cardsUsed;
+	private Card[] deck;
 
 	public Deck() {
 		int iCardNbr = 1;
 		for (eSuit eSuit : eSuit.values()) {
 			for (eRank eRank : eRank.values()) {
-				//TODO Lab3 - Fix this
-				if (eSuit != eSuit.JOKER) {
+				if (eSuit != pokerEnums.eSuit.JOKER) {
 					deckCards.add(new Card(eSuit, eRank, iCardNbr++));
 				}
 			}
@@ -25,8 +27,6 @@ public class Deck {
 	}
 	
 	public Deck(int NbrOfJokers) {
-
-		//TODO Lab3 - Implement joker constructor
 		this();
 		for (int i = 0; i< NbrOfJokers; i++){
 			Card c = new Card();
@@ -40,7 +40,6 @@ public class Deck {
 	
 	public Deck(int NbrOfJokers, ArrayList<Card> Wilds) {
 
-		//TODO Lab3 - Implement joker and wild constructor
 		this(NbrOfJokers);
 		
 		for (Card c : deckCards){
@@ -52,8 +51,15 @@ public class Deck {
 			}
 		}
 	}
-	public Card Draw(){
-		//TODO Lab 3 - Implement exception handling for overdraw
-		return deckCards.remove(0);
+	
+	public int cardsLeft() {
+		return deck.length - cardsUsed;
 	}
+	
+	public Card Draw() throws DeckException {
+		if (cardsLeft() == 0) {
+			throw new DeckException("Deck is Empty");
+		}
+	return this.deckCards.remove(0);
+}
 }

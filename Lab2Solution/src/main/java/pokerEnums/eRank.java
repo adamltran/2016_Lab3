@@ -21,7 +21,6 @@ public enum eRank {
 	
 	
 
-	//TODO - Lab 3 - Add Joker as a new rank Joker(99)
 	private int iRankNbr;
 
 	private eRank(int iRankNbr) {

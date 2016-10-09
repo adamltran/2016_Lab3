@@ -1,6 +1,7 @@
 package pokerBase;
 
 import java.lang.reflect.InvocationTargetException;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +10,9 @@ import pokerEnums.eCardNo;
 import pokerEnums.eHandStrength;
 import pokerEnums.eRank;
 import pokerEnums.eSuit;
+
+import pokerExceptions.DeckException;
+import pokerExceptions.ShortHandException;
 
 public class Hand {
 
@@ -53,15 +57,16 @@ public class Hand {
 	 */
 	static Hand EvaluateHand(Hand h) throws Exception {
 
-		// Sort the colleciton (by hand rank)
+		// Sort the collection (by hand rank)
 		Collections.sort(h.getCardsInHand());
 
 		// TODO - Lab 3 Here's the code to throw the HandException
 		// TODO - Implement HandException
-		/*
-		 * if (h.getCardsInHand().size() != 5) { throw new
-		 * HandException(h,eHandExceptionType.ShortHand); }
-		 */
+		
+		if (h.getCardsInHand().size() != 5) {
+			throw new ShortHandException("You do not have enough cards.");
+		}
+		 
 
 		ArrayList<Hand> ExplodedHands = new ArrayList<Hand>();
 		ExplodedHands.add(h);
@@ -121,11 +126,48 @@ public class Hand {
 	 * @return
 	 */
 
-	private static ArrayList<Hand> ExplodeHands(ArrayList<Hand> Hands) {
-		// TODO - Lab3 Implement this
-		return null;
+	private static ArrayList<Hand> ExplodeHands(ArrayList<Hand> Hands) throws DeckException {
+		ArrayList<Hand> returnHands = new ArrayList<Hand>();
+		
+		if (((Hands.get(0).getCardsInHand().get(eCardNo.FourthCard.getCardNo()).geteRank() == pokerEnums.eRank.JOKER)
+				&& (Hands.get(0).getCardsInHand().get(eCardNo.FourthCard.getCardNo()).geteSuit() == pokerEnums.eSuit.JOKER))
+				&& ((Hands.get(0).getCardsInHand().get(eCardNo.FifthCard.getCardNo()).geteRank() == pokerEnums.eRank.JOKER)
+				&& (Hands.get(0).getCardsInHand().get(eCardNo.FifthCard.getCardNo()).geteSuit() == pokerEnums.eSuit.JOKER))) {
+			for(Hand h: Hands){
+				Deck d = new Deck();
+				Hand addHand = new Hand();
+				for (int i = 0; i < 52; i++) {
+					addHand.AddToCardsInHand(h.getCardsInHand().get(eCardNo.FirstCard.getCardNo()));
+					addHand.AddToCardsInHand(h.getCardsInHand().get(eCardNo.SecondCard.getCardNo()));
+					addHand.AddToCardsInHand(h.getCardsInHand().get(eCardNo.ThirdCard.getCardNo()));
+					addHand.AddToCardsInHand(d.Draw());
+					addHand.AddToCardsInHand(d.Draw());
+				}
+				returnHands.add(addHand);
+			}
+		}
+		
+		else if ((Hands.get(0).getCardsInHand().get(eCardNo.FifthCard.getCardNo()).geteRank() == pokerEnums.eRank.JOKER)
+				&& (Hands.get(0).getCardsInHand().get(eCardNo.FifthCard.getCardNo()).geteSuit() == pokerEnums.eSuit.JOKER)) {
+			for(Hand h: Hands){
+				Deck d = new Deck();
+				Hand addHand = new Hand();
+				for (int i = 0; i < 52; i++) {
+					addHand.AddToCardsInHand(h.getCardsInHand().get(eCardNo.FirstCard.getCardNo()));
+					addHand.AddToCardsInHand(h.getCardsInHand().get(eCardNo.SecondCard.getCardNo()));
+					addHand.AddToCardsInHand(h.getCardsInHand().get(eCardNo.ThirdCard.getCardNo()));
+					addHand.AddToCardsInHand(h.getCardsInHand().get(eCardNo.FourthCard.getCardNo()));
+					addHand.AddToCardsInHand(d.Draw());
+				}
+				returnHands.add(addHand);
+			}
+				
+		}
+		return returnHands;
 	}
-
+	
+	
+	
 	public static boolean isHandRoyalFlush(Hand h, HandScore hs) {
 
 		Card c = new Card();
@@ -167,12 +209,11 @@ public class Hand {
 		if ((isHandFourOfAKind(h,hs)) && ((hs.getKickers().get(0).geteSuit() == eSuit.JOKER) ||
 				hs.getKickers().get(0).isbWild()== true)){
 			isFiveOfAKind = true;
-		
-		return isFiveOfAKind;
 			
 			
 			
 		}
+		return isFiveOfAKind;
 	
 	}			
 					
